@@ -1,0 +1,25 @@
+cache:
+  paths:
+  - node_modules/
+
+before_script:
+  - whoami
+  - groups
+  - pwd
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  only:
+    - develop
+  script:
+    - rm -rf /home/projects/super
+    - mkdir /home/projects/super
+    - npm install
+    - cp . /home/projects/super -R
+    - cd /home/projects/super
+    - npm run build
+    - scp -r ./build/* admin42@45.80.64.202:/var/www/super/public
+    # - npm run storybook:build
